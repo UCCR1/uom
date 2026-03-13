@@ -1,7 +1,7 @@
 //! Ratio (dimensionless quantity).
 
 #[cfg(feature = "std")]
-use super::angle::{Angle, radian};
+use super::angle::{radian, Angle};
 
 quantity! {
     /// Ratio (dimensionless quantity).
@@ -143,6 +143,24 @@ where
     #[inline(always)]
     pub fn ln_1p(self) -> Self {
         Ratio::new::<ratio>(self.value.ln_1p())
+    }
+}
+
+impl<U, V> crate::num::One for Ratio<U, V>
+where
+    U: crate::si::Units<V> + ?Sized,
+    V: crate::num::Float + crate::Conversion<V>,
+{
+    fn one() -> Self {
+        Ratio {
+            dimension: crate::lib::marker::PhantomData,
+            units: crate::lib::marker::PhantomData,
+            value: V::one(),
+        }
+    }
+
+    fn is_one(&self) -> bool {
+        self.value.is_one()
     }
 }
 
