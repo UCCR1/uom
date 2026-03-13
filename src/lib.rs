@@ -266,7 +266,9 @@ pub mod num {
     #[cfg(not(any(feature = "std", feature = "libm")))]
     pub use num_traits::float::FloatCore as Float;
 
-    pub use num_traits::{pow, FromPrimitive, Num, One, Saturating, Signed, ToPrimitive, Zero};
+    pub use num_traits::{
+        pow, ConstOne, ConstZero, FromPrimitive, Num, One, Saturating, Signed, ToPrimitive, Zero,
+    };
 
     #[cfg(feature = "bigint-support")]
     pub use num_bigint::{BigInt, BigUint};
@@ -471,20 +473,6 @@ pub trait ConversionFactor<V>:
     fn value(self) -> V;
 }
 
-/// Helper trait to identify the zero value of a type at compile time.
-///
-#[cfg_attr(all(feature = "si", feature = "f32"), doc = " ```rust")]
-#[cfg_attr(not(all(feature = "si", feature = "f32")), doc = " ```rust,ignore")]
-/// # use uom::si::f32::Length;
-/// use uom::ConstZero;
-///
-/// const ORIGIN: (Length, Length, Length) = (Length::ZERO, Length::ZERO, Length::ZERO);
-/// ```
-pub trait ConstZero {
-    /// Constant representing the zero value.
-    const ZERO: Self;
-}
-
 /// Default [kind][kind] of quantities to allow addition, subtraction, multiplication, division,
 /// remainder, negation, and saturating addition/subtraction.
 ///
@@ -535,10 +523,6 @@ storage_types! {
         fn value(self) -> Self {
             self
         }
-    }
-
-    impl crate::ConstZero for V {
-        const ZERO: Self = 0.0;
     }
 }
 

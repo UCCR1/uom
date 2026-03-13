@@ -164,6 +164,18 @@ where
     }
 }
 
+impl<U, V> crate::num::ConstOne for Ratio<U, V>
+where
+    U: crate::si::Units<V> + ?Sized,
+    V: crate::num::Float + crate::Conversion<V> + crate::num::ConstOne,
+{
+    const ONE: Self = Ratio {
+        dimension: crate::lib::marker::PhantomData,
+        units: crate::lib::marker::PhantomData,
+        value: V::ONE,
+    };
+}
+
 mod convert {
     use super::Ratio;
 

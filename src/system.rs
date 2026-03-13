@@ -1318,11 +1318,12 @@ macro_rules! system {
             }
         }
 
-        impl<D, U, V> $crate::ConstZero for Quantity<D, U, V>
+        impl<D, U, V> $crate::num::ConstZero for Quantity<D, U, V>
         where
             D: Dimension + ?Sized,
+            D::Kind: $crate::marker::Add,
             U: Units<V> + ?Sized,
-            V: $crate::num::Num + $crate::Conversion<V> + $crate::ConstZero,
+            V: $crate::num::Num + $crate::Conversion<V> + $crate::num::ConstZero,
         {
             const ZERO: Self = Self {
                 dimension: $crate::lib::marker::PhantomData,
