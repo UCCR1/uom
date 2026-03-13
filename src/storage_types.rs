@@ -211,6 +211,11 @@ macro_rules! storage_types_mod {
     (($(#[$attr:meta])*) $vis:vis $M:ident, $V:ty $(, $VV:ty)?; ($($tt:tt)*)) => {
         $(#[$attr])*
         $vis mod $M {
+            std!{
+                #[allow(unused)]
+                use $crate::num_traits::Float;
+            }
+
             /// Storage type.
             #[allow(dead_code)]
             $vis type V = $V;

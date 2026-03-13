@@ -866,7 +866,7 @@ macro_rules! system {
                         Quantity {
                             dimension: $crate::lib::marker::PhantomData,
                             units: $crate::lib::marker::PhantomData,
-                            value: self.value.mul_add(a.value, b.value),
+                            value: MulAdd::mul_add(self.value, a.value, b.value),
                         }
                     }
 
