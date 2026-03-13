@@ -108,7 +108,7 @@ macro_rules! si {
 /// Expands the given block of code when `uom` is compiled with the `std` feature.
 #[doc(hidden)]
 #[macro_export]
-#[cfg(feature = "std")]
+#[cfg(any(feature = "std", feature = "libm"))]
 macro_rules! std {
     ($($tt:tt)*) => { $($tt)* };
 }
@@ -116,7 +116,7 @@ macro_rules! std {
 /// Does not expand the given block of code when `uom` is compiled without the `std` feature.
 #[doc(hidden)]
 #[macro_export]
-#[cfg(not(feature = "std"))]
+#[cfg(not(any(feature = "std", feature = "libm")))]
 macro_rules! std {
     ($($tt:tt)*) => {};
 }
