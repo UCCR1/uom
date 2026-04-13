@@ -178,6 +178,8 @@
 // not need to be dereferenced or cloned.
 #![cfg_attr(all(clippy, test), allow(clippy::op_ref, clippy::clone_on_copy, clippy::float_cmp))]
 
+use num_traits::Float;
+
 // Fail to compile if no underlying storage type features are specified.
 #[rustfmt::skip]
 #[cfg(not(any(
@@ -491,6 +493,24 @@ pub trait Kind:
     + marker::Neg
     + marker::Saturating
 {
+}
+
+/// A trait representing any type which can have its square root taken.
+/// This is an important operator for spatial analysis which does not have a generic trait in the core rust library
+pub trait Root {
+    /// The resulting type when taking a square root
+    type Root;
+
+    /// Gets the square root
+    fn root(self) -> Self::Root;
+}
+
+impl<T: Float> Root for T {
+    type Root = T;
+
+    fn root(self) -> Self::Root {
+        self.sqrt()
+    }
 }
 
 storage_types! {

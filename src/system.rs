@@ -936,6 +936,23 @@ macro_rules! system {
                         }
                     }}
                 }
+
+                impl<D, U> $crate::Root for Quantity<D, U, V>
+                where
+                    D: Dimension + ?Sized,
+                    U: Units<V> + ?Sized,
+                    $(D::$symbol: $crate::typenum::PartialDiv<$crate::typenum::P2>,
+                    <D::$symbol as $crate::typenum::PartialDiv<$crate::typenum::P2>>::Output: $crate::typenum::Integer,)+
+                    D::Kind: $crate::marker::Div,
+                {
+                    type Root = Quantity<
+                        $quantities<$($crate::typenum::PartialQuot<D::$symbol, $crate::typenum::P2>),+>,
+                        U, V>;
+
+                    fn root(self) -> Self::Root {
+                        self.sqrt()
+                    }
+                }
             }
         }
 
